@@ -8,12 +8,12 @@ systemctl enable nfs-server.service
 systemctl start rpcbind.service
 systemctl start nfs-server.service
 
-mkdir -p /nfsshare/exports/data
-mkdir -p /nfsshare/exports/export
+mkdir -p /mnt/nfsshare/exports/data
+mkdir -p /mnt/nfsshare/exports/export
 
 vi /etc/exports
-/nfsshare/exports/data      *(rw)
-/nfsshare/exports/export    *(rw)
+/mnt/nfsshare/exports/data      *(rw)
+/mnt/nfsshare/exports/export    *(rw)
 
 exportfs -r
 systemctl reload nfs-server.service
@@ -21,8 +21,8 @@ systemctl reload nfs-server.service
 groupadd kvm -g 36
 useradd vdsm -u 36 -g 36
 
- chown -R 36:36 /nfsshare/exports/data
- chown -R 36:36 /nfsshare/exports/export
+ chown -R 36:36 /mnt/nfsshare/exports/data
+ chown -R 36:36 /mnt/nfsshare/exports/export
  
- chmod 0755 /nfsshare/exports/data
- chmod 0755 /nfsshare/exports/export
+ chmod 0755 /mnt/nfsshare/exports/data
+ chmod 0755 /mnt/nfsshare/exports/export
