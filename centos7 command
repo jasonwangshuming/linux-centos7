@@ -1,0 +1,11 @@
+yum install
+yum groupinstall
+yum grouplist
+yum clean all
+yum makecache
+ifconfig
+top
+free
+mkdir -p
+ls -ladrh
+cd
