@@ -1,0 +1,28 @@
+####NFS service
+yum install -y nfs-utils
+
+systemctl daemon-reload
+systemctl enable rpcbind.service
+systemctl enable nfs-server.service
+
+systemctl start rpcbind.service
+systemctl start nfs-server.service
+
+mkdir -p /nfsshare/exports/data
+mkdir -p /nfsshare/exports/export
+
+vi /etc/exports
+/nfsshare/exports/data      *(rw)
+/nfsshare/exports/export    *(rw)
+
+exportfs -r
+systemctl reload nfs-server.service
+
+groupadd kvm -g 36
+useradd vdsm -u 36 -g 36
+
+ chown -R 36:36 /nfsshare/exports/data
+ chown -R 36:36 /nfsshare/exports/export
+ 
+ chmod 0755 /nfsshare/exports/data
+ chmod 0755 /nfsshare/exports/export
