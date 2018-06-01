@@ -3,6 +3,11 @@ yum groupinstall
 yum grouplist
 yum clean all
 yum makecache
+
+systemctl disable firewalld
+systemctl disable NetworkManager
+vi /etc/selinux/config
+
 ifconfig
 top
 free
