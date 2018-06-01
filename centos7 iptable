@@ -1,0 +1,20 @@
+four table five chain
+PREROUTING
+INPUT
+OUTPUT
+FORWARD
+POSTROUTING
+####iptable general parameters
+-P                     ##设置默认策略 
+-F                     ##清空规则链
+-L                     ##显示规则链
+-A                     ##在规则链的末尾加入新规则
+-I num                 ##在规则链的头部加入新规则  
+-D num                 ##删除某条规则链
+-s                     ##匹配来源地址  IP/MASK,加叹号“！”表示除这个IP外
+-d                     ##匹配目的地址    
+-i net interface       ##匹配从这个网卡流入的数据 
+-o net interface       ##匹配从这个网卡流出的数据
+-p                     ##匹配协议  TCP UDP ICMP
+--dport num            ##匹配目标端口号 
+--sport num            ##匹配来源端口号
