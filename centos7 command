@@ -11,6 +11,13 @@ vi +5 /etc/fstab
 
 systemctl disable firewalld
 systemctl disable NetworkManager
+systemctl enable NetworkManager nmcli nmtui
+nmcli connection show 
+nmcli device show
+
+systemctl restart network
+
+
 vi /etc/selinux/config
 
 ifconfig
