@@ -4,7 +4,8 @@ yum grouplist
 yum clean all
 yum makecache
 
-vi      ----  gg  a i o yy dd p
+vi +5 /etc/fstab
+        ----  gg  a i o yy dd p
         ----wq q q! wq! set nu
         ----/ ? n N 
 
