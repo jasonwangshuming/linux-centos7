@@ -1,0 +1,59 @@
+#### 
+systemctl disable NetworkManager
+lsmod | grep bonding
+modprobe --first-time bonding
+vi /etc/modprobe.d/bond.conf
+    alias bond0 binding
+    options bond0 miimon=100 mode=6
+    
+cat /etc/sysconfig/network-scripts/ifcfg-bond0
+TYPE=Bond
+BOOTPROTO=none
+ONBOOT=yes   
+USERCTL=no   //USERCTL:ÊÇ·ñÔÊÐíÆÕÍ¨ÓÃ»§¿ØÖÆ´ËÉè±¸
+DEVICE=bond0
+IPADDR=192.168.0.221
+PREFIX=24
+NM_CONTROLLED=no //NetworkManger
+BONDING_MASTER=yes
+
+
+cat /etc/sysconfig/network-scripts/ifcfg-eth0
+TYPE=Ethernet
+BOOTPROTO=none
+DEFROUTE=yes
+PEERDNS=yes
+PEERROUTES=yes
+NAME=eth0
+DEVICE=eth0
+ONBOOT=yes
+MASTER=bond0
+SLAVE=yes
+USERCTL=no
+
+
+cat /etc/sysconfig/network-scripts/ifcfg-eth1
+TYPE=Ethernet
+BOOTPROTO=none
+DEFROUTE=yes
+PEERDNS=yes
+PEERROUTES=yes
+NAME=eth1
+DEVICE=eth1
+ONBOOT=yes
+MASTER=bond0
+SLAVE=yes
+USERCTL=no
+
+systemctl restart network
+
+cat /proc/net/bonding/bond0
+
+
+****************************************************************************
+NetworkManager nmcli mode:
+systemctl enable NetworkManager
+systemctl start NetworkManager
+nmcli dev sh
+nmcli con sh
+nmcli con add type team con-name team0 ifname team0 config ¡®{"runner":{"name":"roundrobin"}}¡®
