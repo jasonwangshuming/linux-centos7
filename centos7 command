@@ -4,6 +4,10 @@ yum grouplist
 yum clean all
 yum makecache
 
+vi      ----  gg  a i o yy dd p
+        ----wq q q! wq! set nu
+        ----/ ? n N 
+
 systemctl disable firewalld
 systemctl disable NetworkManager
 vi /etc/selinux/config
@@ -14,6 +18,8 @@ free
 mkdir -p
 ls -ladrh
 cd
+
+
 yum install -y wget curl iftop net-tools tree
 yum install -y tigervnc tigervnc-server
 cp /lib/systemd/system/vncserver\@.service /lib/systemd/system/vncserver\@:1.service
