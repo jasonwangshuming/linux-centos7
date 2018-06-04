@@ -36,3 +36,6 @@ vncpasswd
 systemctl enable vncserver@:1.service
 systemctl start vncserver@:1.service 
 systemctl status vncserver@:1.service 
+
+ls -Zd /var/www/html/
+semanage  -l -a -m -d
