@@ -1,0 +1,37 @@
+yum install -y dhcp
+####  配置DHCP服务
+vim /etc/dhcp/dhcpd.conf
+ddns-update-style none;
+ignore client-updates;
+subnet 10.20.0.0 netmask 255.255.255.0 {
+range 10.20.0.20 10.20.0.230;
+option subnet-mask 255.255.255.0;
+option routers 10.20.0.1;
+option domain-name "xjshuming.com";
+option domain-name-servers 10.20.0.254;
+default-lease-time 21600;
+max-lease-time 43200;
+
+}
+####  启动服务
+systemctl enable dhcpd
+systemctl start dhcpd
+
+
+####  分配固定IP 增加 HOST 配置部分
+vi /etc/dhcp/dhcpd.conf
+ddns-update-style none;
+ignore client-updates;
+subnet 10.20.0.0 netmask 255.255.255.0 {
+range 10.20.0.20 10.20.0.230;
+option subnet-mask 255.255.255.0;
+option routers 10.20.0.1;
+option domain-name "xjshuming.com";
+option domain-name-servers 10.20.0.254;
+default-lease-time 21600;
+max-lease-time 43200;
+host DC01 {
+hardware ethernet 00:1a:4a:16:01:16 ;
+fixed-address 10.20.0.60
+}
+}
