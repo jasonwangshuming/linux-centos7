@@ -25,4 +25,5 @@ create iqn.2003-01.org.linux-iscsi.ovirtensrv.x8664:sn.bb2a1c7c5831:client
 #### 设置Iscsi服务端监听IP地址和端口号
 cd ..
 cd portals
-
+delete 0.0.0.0 3260
+create 10.40.0.4
