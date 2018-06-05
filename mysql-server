@@ -1,0 +1,2 @@
+#### 安装数据库软件
+yum install -y mariadb mariadb-server
