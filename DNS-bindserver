@@ -44,10 +44,43 @@ ftp IN A        10.20.0.253
 #### 启动服务
 systemctl enable named
 systemctl restart named
-####   验证服务
+####   验证服务 输入域名查询IP地址
 #### 首先要把网卡的DNS服务器设置成DNS服务器地址
 systemctl restart network
 nslookup
 
 ####  反向解析
+####  第一步编辑区域文件
+vim /etc/named.rfc1912.zones
+zone "xjshuming.com" IN {
+        type master;
+        file "xjshuming.com.zone";
+        allow-update {none;};
+};
 
+zone "0.20.10.in-addr.arpa" IN {
+        type master;
+        file "10.20.0.arpa";
+};
+####  第二步编辑数据配置文件
+cd /var/named
+cp -a named.loopback 10.20.0.arpa
+vim 10.20.0.arpa
+$TTL 1D
+@       IN SOA  xjshuming.com.  root.xjshuming.com. (
+                                        0       ; serial
+                                        1D      ; refresh
+                                        1H      ; retry
+                                        1W      ; expire
+                                        3H )    ; minimum
+        NS      ns
+ns      A       10.20.0.254
+        A       127.0.0.1
+        AAAA    ::1
+        PTR     localhost.
+254     PTR     ns.xjshuming.com
+253     PTR     www.xjshuming.com
+253     PTR     mail.xjshuming.com
+253     PTR     ftp.xjshuming.com
+####  检验结果 输入IP地址查询主机名称
+nslookup
