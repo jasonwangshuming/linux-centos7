@@ -1,0 +1,2 @@
+yum install -y samba
+vim /etc/samba/smb.conf
