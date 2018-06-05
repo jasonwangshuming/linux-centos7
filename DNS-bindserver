@@ -9,6 +9,8 @@ yum install -y bind-chroot bind-utils
 vim /etc/named.conf
 listen-on port 53 { any; };
 allow-query     { any; };
+dnssec-enable no;
+dnssec-validation no;
 
 
 named-checkconf #### 检查主配置文件是否有错
