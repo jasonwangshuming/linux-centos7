@@ -1,2 +1,28 @@
-yum install -y scsi-target-utils
+#### 安装配置iSCSI服务器端
+yum install -y targetd targetcli
+systemctl start targetd
+systemctl enable targetd
+
+targetcli  #### 执行target的管理任务
+   ls      #### 显示target目录
+#### 创建块设备
+cd /backstores/block
+create disk0 /dev/sdc
+cd /
+#### 创建ISCSI target名称及配置共享资源
+ls
+cd iscsi
+create
+ls
+cd iqn.2003-01.org.linux-iscsi.ovirtensrv.x8664:sn.bb2a1c7c5831/
+cd tpg1/luns
+create /backstores/block/disk0
+ls
+#### 设置访问控制列表(ACL)
+cd ..
+cd acls
+create iqn.2003-01.org.linux-iscsi.ovirtensrv.x8664:sn.bb2a1c7c5831:client
+#### 设置Iscsi服务端监听IP地址和端口号
+cd ..
+cd portals
 
