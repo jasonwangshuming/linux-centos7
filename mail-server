@@ -1,0 +1,38 @@
+yum install -y tree net-tools curl iftop vim
+#### mail SMTP 25/TCP
+          POP3 110/TCP
+          IMAP 143/TCP
+          MUA MTA MDA
+MUA -----SMTP-----MTA------SMTP-----POP3/IMAP4----MUA
+####  SMTP  Postfix
+####  POP3  Dovecot
+
+vi /etc/homename
+mail.xjshuming.com
+
+#### 安装 Postfix 软件 系统已经默认安装了该软件
+yum install -y postfix
+#### 设置POSTFIX配置文件
+vim /etc/postfix/main.cf
+myhostname   ####邮件系统的主机名 ********需修改
+mydomain     ####邮件系统的域名   ********需修改
+myorigin     ####从本机发出邮件的域名名称  ********需修改
+inet_interfaces ####监听的网卡接口       ********需修改
+mydestination   ####可接收邮件主机名或域名
+mynetworks      ####设置可转发哪些主机的邮件
+relay_domains   ####设置可转发哪些网域的邮件
+-------------------------------------------------------
+myhostname = mail.xjshuming.com
+mydomain = xjshuming.com
+myorigin = $mydomain
+inet_interfaces = all
+mydestination = $myhostname , $mydomain
+
+#### 创建电子邮件系统的登录帐户
+useradd boss
+echo "linuxprobe" | passwd --stdin boss
+
+systemctl restart postfix
+systemctl enable postfix
+
+####配置Dovecot服务程序
