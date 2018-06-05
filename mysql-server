@@ -14,3 +14,17 @@ create user tomwang@localhost IDENTIFIED BY 'linuxprobe';
 ####  查询mysql 系统用户
 use mysql;
 select host,user,password from user;
+grant select,update,delete,insert on mysql.user to tomwang@localhost;
+revoke select,update,delete,insert on mysql.user to tomwang@localhost;
+
+create database
+describe
+update
+use
+show databases;
+show tables;
+create table mybook (name char(20),id char(10));
+insert into mybook(name,id) values ('linuxprobe','10000');
+####  数据库备份与恢复
+mysqldump -u root -p bookstore > /root/bookstoreDB.dump
+mysqldump -u root -p bookstore < /root/bookstoreDB.dump
