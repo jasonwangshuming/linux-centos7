@@ -119,3 +119,8 @@ zone "0.20.10.in-addr.arpa" IN {
         masters { 10.20.0.254; };
         file "slaves/10.20.0.arpa";
 };
+
+#### 启动DNS 服务 验证配置
+systemctl enable named
+systecmctl restart named
+nslookup
