@@ -27,3 +27,20 @@ cd ..
 cd portals
 delete 0.0.0.0 3260
 create 10.40.0.4
+
+#### 客户端设置
+yum install -y iscsi-initiator-utils
+vim /etc/iscsi/initiatorname.iscsi
+InitiatorName=iqn.2003-01.org.linux-iscsi.ovirtensrv.x8664:sn.bb2a1c7c5831
+systemctl restart iscsid
+systemctl enable iscsid
+iscsiadm -m discovery -t st -p 10.40.0.4
+iscsiadm -m node -T iqn.2003-01.org.linux-iscsi.ovirtensrv.x8664:sn.bb2a1c7c5831 -p 10.40.0.4 --login
+file /dev/sdc
+mkfs.xfs /dev/sdc
+mkdir /iscsi
+mount /dev/sdc /iscsi
+df -h
+blkid | grep /dev/sdc
+vim /etc/fstab
+uuid=3167c549-16a5-4341-a490-323a8c38b565 /iscsi xfs defaults,_netdev 0 0
