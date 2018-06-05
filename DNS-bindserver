@@ -1,0 +1,53 @@
+#### DNS 递归查询
+#### DNS 迭代查询
+yum install -y bind-chroot bind-utils
+#### BIND 配置文件
+/etc/named.conf   #### 主配置文件，用来bind服务程序的运行参数
+/etc/named.rfc1912.zones  #### 区域配置文件 用来保存域名和IP地址所在的具体位置，当需要查看或修改时，可根据这个位置找到相应的文件
+/var/named  #### 改目录用来保存域名和IP地址真实对应关系的数据配置文件
+#### 修改named.conf主配置文件
+vim /etc/named.conf
+listen-on port 53 { any; };
+allow-query     { any; };
+
+
+named-checkconf #### 检查主配置文件是否有错
+named-checkzone #### 检查数据配置文件是否有错
+####  配置正向解析服务
+####  第一步 编辑区域配置文件
+vim /etc/named.rfc1912.zones #### 新增xjshuming.com区域配置
+zone "xjshuming.com" IN {
+        type master;
+        file "xjshuming.com.zone";
+        allow-update {none;};
+};
+
+#### 第二步 编辑数据配置文件
+cd /var/named
+ls -al named.localhost
+cp -a named.localhost xjshuming.com.zone
+vim xjshuming.com.zone
+$TTL 1D
+@       IN SOA  xjshuming.com. root.xjshuming.com. (
+                                        0       ; serial
+                                        1D      ; refresh
+                                        1H      ; retry
+                                        1W      ; expire
+                                        3H )    ; minimum
+        NS      ns
+ns  IN A        10.20.0.254
+       A       127.0.0.1
+       AAAA    ::1
+www IN A        10.20.0.253
+ftp IN A        10.20.0.253
+
+#### 启动服务
+systemctl enable named
+systemctl restart named
+####   验证服务
+#### 首先要把网卡的DNS服务器设置成DNS服务器地址
+systemctl restart network
+nslookup
+
+####  反向解析
+
