@@ -1,0 +1,96 @@
+####  ftp tcp port: 20(data) 21(command)
+####  匿名开放模式
+####  本地用户开放模式
+####  虚拟用户开放模式
+yum install -y vsftpd    ####  install server
+systemctl enable vsftpd
+systemctl start vsftpd
+yum install -y ftp       ####  install client
+mv /etc/vsftpd/vsftpd.conf /etc/vsftpd/vsftpd.conf.bak
+grep -v "#" /etc/vsftpd/vsftpd.conf.bak > /etc/vsftpd/vsftpd.conf
+vim /etc/vsftpd/vsftpd.conf
+
+getsebool -a | grep ftp
+setsebool -P ftpd_full_access=on
+
+
+####  匿名开放模式设置参数
+anonymous_enable=YES
+anon_upload_enable=YES
+anon_mkdir_write_enable=YES
+anon_other_write_enable=YES
+
+####  本地用户开放模式
+anonymous_enable=NO
+local_enable=YES
+write_enable=YES
+local_umask=022
+userlist_enable=YES
+userlist_deny=YES
+
+####  虚拟用户开放模式
+####  创建一个用户数据库文件，其中奇数行为帐户名，偶数行为用户密码
+vim vsftpuser.list
+wangshuming
+redhat7
+tangxueyao
+redhant7
+wangsiyuan
+redhant7
+####  为了保证用户数据的安全，需要将明文信息文件，转换为数据库文件
+db_load -T -t hash -f vsftpuser.list vsftpuser.db
+file vsftpuser.db
+chmod 600 vsftpuser.db
+####  创建VSFTP服务程序用于存储文件的根目录以及虚拟用户映射的系统本地用户
+useradd -d /var/ftproot -s /sbin/nologin virtual
+ls -ld /var/ftproot
+chmod -Rf 755 /var/ftproot/
+#### 建立用于支持虚拟用户的PAM文件
+vim /etc/pam.d/vsftpd.vu
+auth required pam_userdb.so db=/etc/vsftpd/vsftpuser
+account required pam_userdb.so db=/etc/vsftpd/vsftpuser
+####  在VSFTP服务程序的主配置文件中通过pam_service_name参数将PAM认证文件名称修改为vsftpd.vu
+####  vsftpd.conf的配置文件参数
+anonymous_enable=NO
+local_enable=YES
+guest_enable=YES
+guest_username=virtual
+all_writeable_chroot=YES
+user_config_dir=/etc/vsftpd/vsftpuser_dir
+####  为虚拟用户设置不同的权限
+mkdir /etc/vsftpd/vsftpuser_dir
+cd /etc/vsftpd/vsftpuser_dir
+touch wangshuming
+vim tangxueyao
+anon_upload_enable=YES
+anon_mkdir_write_enable=YES
+anon_other_write_enable=YES
+
+####   安装简单文件传输协议
+yum install -y tftp-server tftp xinetd
+vim /etc/xinetd.d/tftp  #### 将disable 由 yes 改为 no
+service tftp
+{
+        socket_type             = dgram
+        protocol                = udp
+        wait                    = yes
+        user                    = root
+        server                  = /usr/sbin/in.tftpd
+        server_args             = -s /var/lib/tftpboot
+        disable                 = no
+        per_source              = 11
+        cps                     = 100 2
+        flags                   = IPv4
+}
+
+systemctl restart xinetd
+systemctl enable xinetd
+firewall-cmd --permanent --add-port=69/udp
+firewall-cmd --reload
+
+####  ftp根目录  /var/ftp
+#### tftp根目录  /var/lib/tftp
+
+
+
+
