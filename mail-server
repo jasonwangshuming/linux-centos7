@@ -36,3 +36,19 @@ systemctl restart postfix
 systemctl enable postfix
 
 ####配置Dovecot服务程序
+yum install -y dovecot
+vim /etc/dovecot/dovecot.conf
+protocols = imap pop3 lmtp
+disable_plaintext_auth = no
+login_trusted_networks = 10.20.0.0/24
+
+#### 配置邮件格式和存储路径
+vim /etc/dovecot/conf.d/10-mail.conf
+mail_location = mbox:~/mail:INBOX=/var/mail/%u
+
+su - boss
+mkdir -p mail/.imap/INBOX
+exit
+
+systemctl enable dovecot
+systemctl start dovecot
