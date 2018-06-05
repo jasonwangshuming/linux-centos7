@@ -84,3 +84,38 @@ ns      A       10.20.0.254
 253     PTR     ftp.xjshuming.com
 ####  检验结果 输入IP地址查询主机名称
 nslookup
+
+
+#### 部署DNS BIND从服务器
+yum install -y bind-chroot
+#### 修改named.conf主配置文件
+vim /etc/named.conf
+listen-on port 53 { any; };
+allow-query     { any; };
+#### 第一步在主服务器区域配置文件中允许从服务器的更新请求
+vim /etc/named.rfc1912.zones
+zone "xjshuming.com" IN {
+        type master;
+        file "xjshuming.com.zone";
+        allow-update { 10.20.0.253; };
+};
+
+zone "0.20.10.in-addr.arpa" IN {
+        type master;
+        file "10.20.0.arpa";
+        allow-update { 10.20.0.253; };
+};
+
+#### 在从服务器区域配置文件中填写主服务器IP地址和要抓取的区域信息
+vim /etc/named.rfc1912.zones
+zone "xjshuming.com" IN {
+        type slave;
+        masters { 10.20.0.254; };
+        file "slaves/xjshuming.com.zone";
+};
+
+zone "0.20.10.in-addr.arpa" IN {
+        type slave;
+        masters { 10.20.0.254; };
+        file "slaves/10.20.0.arpa";
+};
