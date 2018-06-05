@@ -1,0 +1,21 @@
+#### 通过源码安装软件步骤
+#### 第一步 下载并解压 源码安装包
+wget myfilename.tar.gz
+tar xzvf myfilename.tar.gz
+cd filedirectory
+####  第二步编译源码包代码 成功后会生成一个 Makefile 文件
+./configure --prefix=/usr/local/program
+####  第三步生成二进制安装程序
+make
+####  第四步运行二进制的服务程序安装包
+make install
+####  第五步 清除安装程序
+make clean
+##### LNMP 源码安装过程 (Linux Nginx MySQL PHP)
+
+#### 安装编译环境软件包
+yum install -y apr* autoconf automake bison bzip2 bzip2* compat* cpp curl curl-devel fontconfig fontconfig-devel freetype \
+    freetype* freetype-devel gcc gcc-c++ gd gettext gettext-devel glibc kernel kernel-headers keyutils keyutils-libs-devel krb5-devel \
+    libstdc++-devel libtool* libgomp libxml2 libxml2-devel libXpm* libtiff libtiff* make mpfr ncurses* ntp openssl openssl-devel \
+    patch pcre-devel perl php-common php-gd policycoreutils telnet t1lib t1lib* nasm nasm* wget zlib-devel
+cd /usr/local/src
