@@ -1,2 +1,16 @@
 #### 安装数据库软件
 yum install -y mariadb mariadb-server
+systemctl enable mariadb
+systemctl start mariadb
+mysql_secure_installation
+mysql -uroot -p
+mysql -uroot -pExdikkkisl -e "show databases;"
+
+firewall-cmd --permanent --add-service=mysql
+
+SET password = PASSWORD('linuxprobe')
+
+create user tomwang@localhost IDENTIFIED BY 'linuxprobe';
+####  查询mysql 系统用户
+use mysql;
+select host,user,password from user;
