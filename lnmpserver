@@ -14,8 +14,49 @@ make clean
 ##### LNMP 源码安装过程 (Linux Nginx MySQL PHP)
 
 #### 安装编译环境软件包
+yum groupinstall -y "Development and Creative Workstation"
 yum install -y apr* autoconf automake bison bzip2 bzip2* compat* cpp curl curl-devel fontconfig fontconfig-devel freetype \
     freetype* freetype-devel gcc gcc-c++ gd gettext gettext-devel glibc kernel kernel-headers keyutils keyutils-libs-devel krb5-devel \
     libstdc++-devel libtool* libgomp libxml2 libxml2-devel libXpm* libtiff libtiff* make mpfr ncurses* ntp openssl openssl-devel \
     patch pcre-devel perl php-common php-gd policycoreutils telnet t1lib t1lib* nasm nasm* wget zlib-devel
 cd /usr/local/src
+#### 安装Cmake 软件包  https://cmake.org/
+wget https://cmake.org/files/v3.11/cmake-3.11.3.tar.gz
+tar -zxvf cmake-3.11.3.tar.gz
+./configure
+make 
+make install
+
+
+#### 安装mysql 数据库服务器 https://dev.mysql.com/
+wget https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm
+yum install -y mysql-server
+systemctl enable mysqld
+systemctl start mysqld
+grep 'temporary password' /var/log/mysqld.log   ####获取root 临时密码
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'new_password'; ####修改root密码
+mysql_secure_installation
+mysqladmin version
+mysqladmin variables
+mysqladmin -u root -p version
+bin/mysqld_safe --user=mysql &
+mysqlshow 
+mysql -e "SELECT User, Host, plugin FROM mysql.user"
+mysql -u root --skip-password
+
+#### 安装nginx应用服务器 http://nginx.org/
+vim /etc/yum.repos.d/nginx.repo
+[nginx]
+name=nginx repo
+baseurl=http://nginx.org/packages/mainline/centos/7/$basearch/
+gpgcheck=0
+enabled=1
+yum install -y nginx
+systemctl enable nginx
+systemctl start nginx
+
+#### 安装php 服务器软件  http://www.php.net/
+wget http://ba1.php.net/distributions/php-7.0.30.tar.gz
+./configure --enable-fpm --with-mysql
+make
+sudo make install
