@@ -1,0 +1,4 @@
+#### install apache server http://httpd.apache.org/docs/2.4/install.html
+#### yum install httpd
+#### systemctl enable httpd
+#### systemctl start httpd
