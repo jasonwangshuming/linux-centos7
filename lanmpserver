@@ -44,3 +44,4 @@ vi /etc/httpd/conf/httpd.conf
     <IfModule>
     <IfVersion>
  
+httpd -S
