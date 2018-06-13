@@ -26,3 +26,17 @@ yum isntall -y php
 yum install -y mariadb mariadb-server
 
 vi /etc/httpd/conf/httpd.conf
+
+ apachectl configtest #### 测试配置文件语法错误
+ apachectl -l      ####查看已经编译的模块
+ apachectl -M      ####查看已经加载的模块
+ 
+ Related Directives
+	  <Directory>
+    <DirectoryMatch>
+    <Files>
+    <FilesMatch>
+    <Location>
+    <LocationMatch>
+    <VirtualHost>
+ 
