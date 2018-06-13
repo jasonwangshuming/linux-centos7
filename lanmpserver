@@ -32,11 +32,15 @@ vi /etc/httpd/conf/httpd.conf
  apachectl -M      ####查看已经加载的模块
  
  Related Directives
-	  <Directory>
+    <Directory>
     <DirectoryMatch>
     <Files>
     <FilesMatch>
     <Location>
     <LocationMatch>
     <VirtualHost>
+    
+    <IfDefine>
+    <IfModule>
+    <IfVersion>
  
