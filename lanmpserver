@@ -16,3 +16,13 @@ Test 	$ PREFIX/bin/apachectl -k start
 wget http://mirror.bit.edu.cn/apache//apr/apr-1.6.3.tar.gz
 tar 
 wget http://mirror.bit.edu.cn/apache//apr/apr-util-1.6.1.tar.gz
+###############################################################################################
+
+yum install -y apr apr-util
+yum install -y perl
+yum install -y pcre-devel
+yum install -y httpd
+yum isntall -y php
+yum install -y mariadb mariadb-server
+
+vi /etc/httpd/conf/httpd.conf
